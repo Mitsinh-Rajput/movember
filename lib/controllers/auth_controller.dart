@@ -4,9 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get_connect.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 import 'package:movember/services/extensions.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,9 +64,8 @@ class AuthController extends GetxController implements GetxService {
     Assets.images7,
     Assets.images8,
     Assets.images9,
-    Assets.images10,
+    Assets.images31,
     Assets.images11,
-    Assets.images12,
   ];
 
   Future<bool> connectivity() async {
@@ -136,6 +133,8 @@ class AuthController extends GetxController implements GetxService {
     FocusScope.of(navigatorKey.currentContext!).unfocus();
     if (pageController.page! == 1 && !validatePages()) {
       return;
+    } else if (pageController.page! == 7 && !validatePages()) {
+      return;
     } else {
       await pageController.animateToPage((pageController.page! + 1).round(), duration: const Duration(milliseconds: 50), curve: Curves.ease);
       update();
@@ -163,9 +162,15 @@ class AuthController extends GetxController implements GetxService {
       }
       Fluttertoast.showToast(msg: "Please enter all data");
       return false;
+    } else if (pageController.page! == 7) {
+      if (imageFile != null) {
+        return true;
+      }
+      Fluttertoast.showToast(msg: "Please select any one option");
+      return false;
     } else if (pageController.page == (images.length - 1)) {
-      if (feedback.text.isValid && _rating != -1) return true;
-      Fluttertoast.showToast(msg: "Please enter experience & rating");
+      if (feedback.text.isValid) return true;
+      Fluttertoast.showToast(msg: "Please enter comment");
       return false;
     }
     return true;
@@ -194,7 +199,7 @@ class AuthController extends GetxController implements GetxService {
     data['hq'] = threeController.text;
     data['city'] = fourController.text;
     data['description'] = feedback.text;
-    data['stars'] = (rating + 1).toString();
+    data['image_url'] = MultipartFile(imageFile, filename: imageFile!.path.fileName);
     submitDa(data).then((value) {
       if (value.isSuccess) {
         resetForm();

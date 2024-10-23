@@ -38,11 +38,11 @@ class AppConstants {
 
   set setBaseUrl(String url) => baseUrl = url;
 
-  static String baseUrl = 'https://cannoncomm.in/marigos_s/public/';
+  static String baseUrl = 'https://cannoncomm.in/movember_let_it_grow/public/';
 
   // static String baseUrl = 'http://192.168.1.17:9001/';
 
-  static const String submitDa = 'api';
+  static const String submitDa = 'api/store';
 
   ///USE FOR LOCAL
   static const String fontName1 = 'aAkhirTahun';

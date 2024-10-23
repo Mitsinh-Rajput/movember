@@ -46,6 +46,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   }
 
   Future<void> _pickImage(ImageSource source, String? assets) async {
+    log(assets!);
     var navigator = Navigator.of(navigatorKey.currentContext!);
     bool permission = false;
     if (source == ImageSource.camera) {
@@ -60,6 +61,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
       if (pickedFile != null) {
         Get.find<AuthController>().imageFile = pickedFile;
+        await Get.find<AuthController>()
+            .pageController
+            .animateToPage((Get.find<AuthController>().pageController.page! + 2).round(), duration: const Duration(milliseconds: 50), curve: Curves.ease);
         Get.find<AuthController>().update();
       }
     }
@@ -118,7 +122,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                           }
                         },
                         child: Container(
-                          color: Colors.red,
+                          color: Colors.transparent,
                           height: 100,
                           width: 185,
                         ),
@@ -126,60 +130,152 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                   Positioned(
                       top: 360,
                       left: 335,
-                      child: Container(
-                        color: Colors.red,
-                        height: 100,
-                        width: 185,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (!(await Permission.camera.status.isGranted)) {
+                            await Permission.camera.request();
+                          } else {
+                            _pickImage(ImageSource.camera, Assets.images13);
+                          }
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          height: 100,
+                          width: 185,
+                        ),
                       )),
                   Positioned(
                       top: 360,
                       right: 120,
-                      child: Container(
-                        color: Colors.red,
-                        height: 100,
-                        width: 185,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (!(await Permission.camera.status.isGranted)) {
+                            await Permission.camera.request();
+                          } else {
+                            _pickImage(ImageSource.camera, Assets.images15);
+                          }
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          height: 100,
+                          width: 185,
+                        ),
                       )),
                   Positioned(
                       top: 360,
                       right: 333,
-                      child: Container(
-                        color: Colors.red,
-                        height: 100,
-                        width: 185,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (!(await Permission.camera.status.isGranted)) {
+                            await Permission.camera.request();
+                          } else {
+                            _pickImage(ImageSource.camera, Assets.images14);
+                          }
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          height: 100,
+                          width: 185,
+                        ),
                       )),
                   Positioned(
                       bottom: 200,
                       left: 110,
-                      child: Container(
-                        color: Colors.red,
-                        height: 100,
-                        width: 185,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (!(await Permission.camera.status.isGranted)) {
+                            await Permission.camera.request();
+                          } else {
+                            _pickImage(ImageSource.camera, Assets.images16);
+                          }
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          height: 100,
+                          width: 185,
+                        ),
                       )),
                   Positioned(
                       bottom: 200,
                       left: 335,
-                      child: Container(
-                        color: Colors.red,
-                        height: 100,
-                        width: 185,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (!(await Permission.camera.status.isGranted)) {
+                            await Permission.camera.request();
+                          } else {
+                            _pickImage(ImageSource.camera, Assets.images17);
+                          }
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          height: 100,
+                          width: 185,
+                        ),
                       )),
                   Positioned(
                       bottom: 200,
                       right: 123,
-                      child: Container(
-                        color: Colors.red,
-                        height: 100,
-                        width: 185,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (!(await Permission.camera.status.isGranted)) {
+                            await Permission.camera.request();
+                          } else {
+                            _pickImage(ImageSource.camera, Assets.images19);
+                          }
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          height: 100,
+                          width: 185,
+                        ),
                       )),
                   Positioned(
                       bottom: 200,
                       right: 333,
-                      child: Container(
-                        color: Colors.red,
-                        height: 100,
-                        width: 185,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (!(await Permission.camera.status.isGranted)) {
+                            await Permission.camera.request();
+                          } else {
+                            _pickImage(ImageSource.camera, Assets.images18);
+                          }
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          height: 100,
+                          width: 185,
+                        ),
                       )),
                 ],
+
+              if (authController.pageController.hasClients)
+                if (authController.pageController.page?.round() == 9)
+                  Positioned(
+                      top: 253,
+                      left: 340,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            top: 38,
+                            bottom: 38,
+                            left: 38,
+                            right: 38,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(300),
+                              child: Image.file(
+                                Get.find<AuthController>().imageFile!,
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          CustomImage(
+                            path: Assets.images32,
+                            height: 409,
+                          ),
+                        ],
+                      )),
 
               // ----------------- Last Page ------------------------
               if (authController.pageController.hasClients)
@@ -197,6 +293,22 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       },
                       child: const CustomImage(
                         path: Assets.imagesNextButton,
+                        height: 55,
+                        width: 55,
+                      ),
+                    ),
+                  ),
+              if (authController.pageController.hasClients)
+                if (authController.pageController.page?.round() == authController.images.length - 1)
+                  Positioned(
+                    right: 48,
+                    bottom: 28,
+                    child: GestureDetector(
+                      onTap: () async {
+                        authController.homeButton();
+                      },
+                      child: const CustomImage(
+                        path: Assets.imagesHomeButton,
                         height: 55,
                         width: 55,
                       ),
@@ -223,7 +335,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
               // ----------------- Home Button ------------------------
               if (authController.pageController.hasClients)
-                if ((authController.pageController.page?.round() ?? 0) > 1)
+                if ((authController.pageController.page?.round() ?? 0) > 1 && authController.pageController.page?.round() != authController.images.length - 1)
                   Positioned(
                     right: 38,
                     top: 28,

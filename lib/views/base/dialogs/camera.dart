@@ -25,6 +25,12 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations(
+      [
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ],
+    );
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _initializeCamera(_cameraId);
     });
@@ -123,7 +129,7 @@ class _CameraScreenState extends State<CameraScreen> {
                               bottom: 0,
                               child: CustomImage(
                                 path: widget.assets ?? "",
-                                width: 300,
+                                width: 100,
                               ),
                             ),
                             if (isLoading)

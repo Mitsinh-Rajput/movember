@@ -34,40 +34,21 @@ class _LastPageState extends State<LastPage> {
             image: DecorationImage(
               fit: BoxFit.cover,
               image: AssetImage(
-                Assets.assetsImagesPage2,
+                Assets.images11,
               ),
             ),
           ),
           child: Stack(
             children: [
               Positioned(
-                top: 110,
-                right: 0,
-                child: SizedBox(
-                  width: size.width * .5,
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    children: List.generate(5, (index) {
-                      return CustomImage(
-                        onTap: () {
-                          authController.rating = index;
-                        },
-                        path: index > authController.rating ? Assets.imagesStarEmpty : Assets.imagesStarFilled,
-                        width: 160,
-                      );
-                    }),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 105,
-                left: 96,
-                right: 96,
+                top: 273,
+                left: 114,
+                right: 114,
                 child: TextFormField(
                   controller: authController.feedback,
-                  maxLines: 6,
+                  maxLines: 14,
                   decoration: CustomDecoration.inputDecoration(
-                    borderRadius: 33,
+                    borderRadius: 8,
                     borderColor: Colors.black38,
                   ),
                 ),
