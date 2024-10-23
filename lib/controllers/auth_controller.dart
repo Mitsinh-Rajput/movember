@@ -198,7 +198,7 @@ class AuthController extends GetxController implements GetxService {
     data['dr_name'] = twoController.text;
     data['hq'] = threeController.text;
     data['city'] = fourController.text;
-    data['description'] = feedback.text;
+    data['comment'] = feedback.text;
     data['image_url'] = MultipartFile(imageFile, filename: imageFile!.path.fileName);
     submitDa(data).then((value) {
       if (value.isSuccess) {
