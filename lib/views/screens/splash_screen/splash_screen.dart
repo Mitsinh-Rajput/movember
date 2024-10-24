@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -25,6 +26,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
+
     Timer.run(() async {
       Future.delayed(const Duration(seconds: 2), () {
         setState(() {});
@@ -53,19 +55,25 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       permission = await Get.find<AuthController>().getPermission(Permission.camera, context);
     }
     if (permission) {
-      File? pickedFile = await navigator.push(MaterialPageRoute(
-        builder: (context) => CameraScreen(
-          assets: assets,
-        ),
-      ));
+      SystemChrome.setPreferredOrientations(
+        [
+          DeviceOrientation.portraitUp,
+        ],
+      ).then((value) async {
+        File? pickedFile = await navigator.push(MaterialPageRoute(
+          builder: (context) => CameraScreen(
+            assets: assets,
+          ),
+        ));
 
-      if (pickedFile != null) {
-        Get.find<AuthController>().imageFile = pickedFile;
-        await Get.find<AuthController>()
-            .pageController
-            .animateToPage((Get.find<AuthController>().pageController.page! + 2).round(), duration: const Duration(milliseconds: 50), curve: Curves.ease);
-        Get.find<AuthController>().update();
-      }
+        if (pickedFile != null) {
+          Get.find<AuthController>().imageFile = pickedFile;
+          await Get.find<AuthController>()
+              .pageController
+              .animateToPage((Get.find<AuthController>().pageController.page! + 2).round(), duration: const Duration(milliseconds: 50), curve: Curves.ease);
+          Get.find<AuthController>().update();
+        }
+      });
     }
   }
 

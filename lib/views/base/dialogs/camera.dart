@@ -25,13 +25,14 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations(
-      [
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ],
-    );
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      SystemChrome.setPreferredOrientations(
+        [
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ],
+      );
       _initializeCamera(_cameraId);
     });
   }
@@ -55,6 +56,12 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    SystemChrome.setPreferredOrientations(
+      [
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.landscapeLeft,
+      ],
+    );
     super.dispose();
   }
 

@@ -16,13 +16,10 @@ import 'views/screens/splash_screen/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Init().initialize();
-  SystemChrome.setPreferredOrientations(
-    [
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ],
-  );
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]).then((value) => runApp(const MyApp()));
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -81,10 +78,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         }
       }
     });
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
+
     // try {
     //   // _rotationChannel.invokeMethod('setLandscape');
     // } catch (error) {}
@@ -100,7 +94,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         }
       },
       child: MaterialApp(
-        title: "Mirago S 5years",
+        title: "Movember Let It Grow",
         navigatorKey: navigatorKey,
         themeMode: ThemeMode.light,
         theme: CustomTheme.light,
