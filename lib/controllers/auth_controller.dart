@@ -194,51 +194,31 @@ class AuthController extends GetxController implements GetxService {
     _isLoading = true;
     update();
 
-    // Collect the form data
     data['se_name'] = oneController.text;
     data['dr_name'] = twoController.text;
     data['hq'] = threeController.text;
     data['city'] = fourController.text;
     data['comment'] = feedback.text;
-
-    // Save image path instead of actual image file
-    data['image_url'] = imageFile!.path;
-
-    submitDa(data).then((value) async {
+    data['image_url'] = MultipartFile(imageFile, filename: imageFile!.path.fileName);
+    submitDa(data).then((value) {
       if (value.isSuccess) {
-        // If submission is successful
         resetForm();
         animationController.forward(from: 0);
         Fluttertoast.showToast(msg: "Data saved to server");
       } else {
-        // If submission fails, save data locally
         SharedPreferences sharedPreferences = Get.find();
-
-        // Clear existing shared preferences if any
         sharedPreferences.clear();
-
-        // Log current saved data
         log('${sharedPreferences.getString('saved_data')}');
-
-        // Retrieve saved data from SharedPreferences
         List<dynamic> savedData = jsonDecode(sharedPreferences.getString('saved_data') ?? '[]');
-
-        // Add new form data to saved data list
         savedData.add(data);
-
-        // Save updated list back to SharedPreferences
-        await sharedPreferences.setString('saved_data', jsonEncode(savedData));
-
-        // Reset the form and trigger the sync animation
+        sharedPreferences.setString('saved_data', jsonEncode(savedData));
         resetForm();
         animationController.forward(from: 0).then((value) {
           syncData();
         });
-
         Fluttertoast.showToast(msg: "Data saved locally");
       }
     });
-
     _isLoading = false;
     update();
   }
@@ -279,6 +259,7 @@ class AuthController extends GetxController implements GetxService {
         for (int i = savedData.length - 1; i >= 0; i--) {
           var element = savedData[i];
           log("$element", name: "Data element");
+          element["image_url"] = MultipartFile(element["image_url"], filename: element["image_url"]!.path.filename);
 
           // if (false)
           submitDa(element).then((value) {
