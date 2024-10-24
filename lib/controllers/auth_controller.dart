@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:movember/services/extensions.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -184,6 +186,7 @@ class AuthController extends GetxController implements GetxService {
     threeController.clear();
     fourController.clear();
     feedback.clear();
+    imageFile = null;
     rating = -1;
 
     await pageController.animateToPage(0, duration: const Duration(milliseconds: 50), curve: Curves.ease);
@@ -200,12 +203,18 @@ class AuthController extends GetxController implements GetxService {
     data['city'] = fourController.text;
     data['comment'] = feedback.text;
     data['image_url'] = MultipartFile(imageFile, filename: imageFile!.path.fileName);
-    submitDa(data).then((value) {
+    submitDa(data).then((value) async {
       if (value.isSuccess) {
         resetForm();
         animationController.forward(from: 0);
         Fluttertoast.showToast(msg: "Data saved to server");
       } else {
+        // Convert image file to base64
+        if (imageFile != null) {
+          Uint8List imageBytes = await imageFile!.readAsBytes();
+          String base64Image = base64Encode(imageBytes);
+          data['image_url'] = base64Image;
+        }
         SharedPreferences sharedPreferences = Get.find();
         sharedPreferences.clear();
         log('${sharedPreferences.getString('saved_data')}');
@@ -249,6 +258,15 @@ class AuthController extends GetxController implements GetxService {
     return responseModel;
   }
 
+  Future<File> convertUint8ListToImageFile(Uint8List uint8List) async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    final filePath = '${directory.path}/image.png';
+    log(filePath);
+    final file = File(filePath);
+    return await file.writeAsBytes(uint8List);
+  }
+
   syncData() async {
     if (await connectivity()) {
       SharedPreferences sharedPreferences = Get.find();
@@ -259,7 +277,10 @@ class AuthController extends GetxController implements GetxService {
         for (int i = savedData.length - 1; i >= 0; i--) {
           var element = savedData[i];
           log("$element", name: "Data element");
-          element["image_url"] = MultipartFile(element["image_url"], filename: element["image_url"]!.path.filename);
+
+          File image = await convertUint8ListToImageFile(base64Decode(element["image_url"]));
+          element["image_url"] = MultipartFile(image, filename: image.path.fileName);
+          log("$element", name: "Data element");
 
           // if (false)
           submitDa(element).then((value) {
