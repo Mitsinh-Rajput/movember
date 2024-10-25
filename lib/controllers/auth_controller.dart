@@ -5,10 +5,12 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
 import 'package:movember/services/extensions.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/models/response/response_model.dart';
@@ -36,6 +38,8 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+  var repaintKey = GlobalKey();
+
   PageController pageController = PageController();
 
   Map<String, dynamic> data = {
@@ -55,6 +59,7 @@ class AuthController extends GetxController implements GetxService {
   TextEditingController feedback = TextEditingController();
 
   late AnimationController animationController;
+  ScreenshotController screenshotController = ScreenshotController();
 
   List<String> images = [
     Assets.images1,
@@ -65,7 +70,7 @@ class AuthController extends GetxController implements GetxService {
     Assets.images6,
     Assets.images7,
     Assets.images8,
-    Assets.images9,
+    // Assets.images9,
     Assets.images31,
     Assets.images11,
   ];
@@ -138,9 +143,32 @@ class AuthController extends GetxController implements GetxService {
     } else if (pageController.page! == 7 && !validatePages()) {
       return;
     } else {
-      await pageController.animateToPage((pageController.page! + 1).round(), duration: const Duration(milliseconds: 50), curve: Curves.ease);
+      if (isSE) {
+        if (pageController.page! == 1) {
+          await pageController.animateToPage(6, duration: const Duration(milliseconds: 50), curve: Curves.ease);
+        } else {
+          await pageController.animateToPage((pageController.page! + 1).round(), duration: const Duration(milliseconds: 50), curve: Curves.ease);
+        }
+      } else {
+        await pageController.animateToPage((pageController.page! + 1).round(), duration: const Duration(milliseconds: 50), curve: Curves.ease);
+      }
       update();
     }
+  }
+
+  backButton() async {
+    FocusScope.of(navigatorKey.currentContext!).unfocus();
+
+    if (isSE) {
+      if (pageController.page! == 7) {
+        await pageController.animateToPage(1, duration: const Duration(milliseconds: 50), curve: Curves.ease);
+      } else {
+        await pageController.previousPage(duration: const Duration(milliseconds: 50), curve: Curves.ease);
+      }
+    } else {
+      await pageController.previousPage(duration: const Duration(milliseconds: 50), curve: Curves.ease);
+    }
+    update();
   }
 
   Future<void> homeButton() async {
@@ -159,11 +187,19 @@ class AuthController extends GetxController implements GetxService {
     if (pageController.page! == 0) {
       return true;
     } else if (pageController.page! == 1) {
-      if (oneController.text.isValid && twoController.text.isValid && threeController.text.isValid && fourController.text.isValid) {
-        return true;
+      if (isSE) {
+        if (oneController.text.isValid && twoController.text.isValid && fourController.text.isValid) {
+          return true;
+        }
+        Fluttertoast.showToast(msg: "Please enter all data");
+        return false;
+      } else {
+        if (oneController.text.isValid && twoController.text.isValid && threeController.text.isValid && fourController.text.isValid) {
+          return true;
+        }
+        Fluttertoast.showToast(msg: "Please enter all data");
+        return false;
       }
-      Fluttertoast.showToast(msg: "Please enter all data");
-      return false;
     } else if (pageController.page! == 7) {
       if (imageFile != null) {
         return true;
@@ -197,12 +233,17 @@ class AuthController extends GetxController implements GetxService {
     _isLoading = true;
     update();
 
+    if (isSE) {
+      imageFile = await convertUint8ListToImageFile(await screenshotController.capture());
+      await GallerySaver.saveImage(imageFile!.path, albumName: "Movember Let It Grow");
+    }
     data['se_name'] = oneController.text;
-    data['dr_name'] = twoController.text;
-    data['hq'] = threeController.text;
+    data['dr_name'] = threeController.text;
+    data['hq'] = twoController.text;
     data['city'] = fourController.text;
     data['comment'] = feedback.text;
     data['image_url'] = MultipartFile(imageFile, filename: imageFile!.path.fileName);
+    data["type"] = isSE ? "SE" : "DR";
     submitDa(data).then((value) async {
       if (value.isSuccess) {
         resetForm();
@@ -258,14 +299,16 @@ class AuthController extends GetxController implements GetxService {
     return responseModel;
   }
 
-  Future<File> convertUint8ListToImageFile(Uint8List uint8List) async {
+  Future<File> convertUint8ListToImageFile(Uint8List? uint8List) async {
     final directory = await getApplicationDocumentsDirectory();
 
     final filePath = '${directory.path}/image.png';
     log(filePath);
     final file = File(filePath);
-    return await file.writeAsBytes(uint8List);
+    return await file.writeAsBytes(uint8List!);
   }
+
+  bool isSE = false;
 
   syncData() async {
     if (await connectivity()) {

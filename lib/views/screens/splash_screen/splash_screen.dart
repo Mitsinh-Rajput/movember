@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../../../controllers/auth_controller.dart';
 import '../../../main.dart';
@@ -68,9 +69,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
         if (pickedFile != null) {
           Get.find<AuthController>().imageFile = pickedFile;
-          await Get.find<AuthController>()
-              .pageController
-              .animateToPage((Get.find<AuthController>().pageController.page! + 2).round(), duration: const Duration(milliseconds: 50), curve: Curves.ease);
+          await Get.find<AuthController>().pageController.animateToPage(8, duration: const Duration(milliseconds: 50), curve: Curves.ease);
           Get.find<AuthController>().update();
         }
       });
@@ -257,32 +256,35 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 ],
 
               if (authController.pageController.hasClients)
-                if (authController.pageController.page?.round() == 9)
+                if (authController.pageController.page?.round() == 8)
                   Positioned(
                       top: 253,
                       left: 340,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            top: 38,
-                            bottom: 38,
-                            left: 38,
-                            right: 38,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(300),
-                              child: Image.file(
-                                Get.find<AuthController>().imageFile!,
-                                height: 100,
-                                width: 100,
-                                fit: BoxFit.cover,
+                      child: Screenshot(
+                        controller: authController.screenshotController,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: 38,
+                              bottom: 38,
+                              left: 38,
+                              right: 38,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(300),
+                                child: Image.file(
+                                  Get.find<AuthController>().imageFile!,
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                          CustomImage(
-                            path: Assets.images32,
-                            height: 409,
-                          ),
-                        ],
+                            CustomImage(
+                              path: Assets.images32,
+                              height: 409,
+                            ),
+                          ],
+                        ),
                       )),
 
               // ----------------- Last Page ------------------------
@@ -291,7 +293,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
               // ----------------- Forward Button ------------------------
               if (authController.pageController.hasClients)
-                if (authController.pageController.page?.round() != authController.images.length - 1)
+                if (authController.pageController.page!.round() > 0)
                   Positioned(
                     right: 48,
                     bottom: 28,
@@ -301,6 +303,63 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       },
                       child: const CustomImage(
                         path: Assets.imagesNextButton,
+                        height: 55,
+                        width: 55,
+                      ),
+                    ),
+                  ),
+
+              // ----------------- Download Button ------------------------
+              if (authController.pageController.hasClients)
+                if (authController.pageController.page!.round() == 8)
+                  if (authController.isSE)
+                    Positioned(
+                      right: 48,
+                      bottom: 28,
+                      child: GestureDetector(
+                        onTap: () async {
+                          authController.submitForm();
+                        },
+                        child: const CustomImage(
+                          path: Assets.images36,
+                          height: 55,
+                          width: 55,
+                        ),
+                      ),
+                    ),
+
+              // ----------------- SE Button ------------------------
+              if (authController.pageController.hasClients)
+                if (authController.pageController.page?.round() == 0)
+                  Positioned(
+                    right: 128,
+                    bottom: 28,
+                    child: GestureDetector(
+                      onTap: () async {
+                        authController.isSE = true;
+                        authController.forwardButton();
+                      },
+                      child: const CustomImage(
+                        path: Assets.images35,
+                        height: 55,
+                        width: 55,
+                      ),
+                    ),
+                  ),
+
+              // ----------------- DR Button ------------------------
+              if (authController.pageController.hasClients)
+                if (authController.pageController.page?.round() == 0)
+                  Positioned(
+                    right: 48,
+                    bottom: 28,
+                    child: GestureDetector(
+                      onTap: () async {
+                        authController.isSE = false;
+                        authController.forwardButton();
+                      },
+                      child: const CustomImage(
+                        path: Assets.images34,
                         height: 55,
                         width: 55,
                       ),
@@ -331,7 +390,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     bottom: 28,
                     child: GestureDetector(
                       onTap: () async {
-                        authController.pageController.previousPage(duration: const Duration(milliseconds: 50), curve: Curves.ease);
+                        authController.backButton();
                       },
                       child: const CustomImage(
                         path: Assets.imagesBackButton,

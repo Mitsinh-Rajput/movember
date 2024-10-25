@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 
 import '../../../controllers/auth_controller.dart';
 import '../../../services/constants.dart';
@@ -105,26 +104,27 @@ class FormScreen extends StatelessWidget {
                 SizedBox(
                   height: size.height * 0.09,
                 ),
-                SizedBox(
-                  width: size.width * .7,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: size.width * .18,
-                        child: Text(
-                          "DR. NAME",
-                          style: TextStyle(fontFamily: AppConstants.fontName2, fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
+                if (!Get.find<AuthController>().isSE)
+                  SizedBox(
+                    width: size.width * .7,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: size.width * .18,
+                          child: Text(
+                            "DR. NAME",
+                            style: TextStyle(fontFamily: AppConstants.fontName2, fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          controller: authController.threeController,
-                          decoration: CustomDecoration.inputDecoration(borderColor: Colors.black45),
+                        Expanded(
+                          child: TextFormField(
+                            controller: authController.threeController,
+                            decoration: CustomDecoration.inputDecoration(borderColor: Colors.black45),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),
