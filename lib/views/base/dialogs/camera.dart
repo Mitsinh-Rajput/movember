@@ -95,7 +95,7 @@ class _CameraScreenState extends State<CameraScreen> {
       // Resize the asset image if needed (optional)
       img.Image resizedOverlay = img.copyResize(
         overlayImage,
-        width: 300,
+        width: widget.assets == Assets.images19 ? 150 : 275,
       );
       img.compositeImage(capturedImage, resizedOverlay, center: true, blend: img.BlendMode.multiply);
 
@@ -134,9 +134,11 @@ class _CameraScreenState extends State<CameraScreen> {
                               left: 0,
                               right: 0,
                               bottom: 0,
-                              child: CustomImage(
-                                path: widget.assets ?? "",
-                                width: 100,
+                              child: Center(
+                                child: CustomImage(
+                                  path: widget.assets ?? "",
+                                  height: 100,
+                                ),
                               ),
                             ),
                             if (isLoading)

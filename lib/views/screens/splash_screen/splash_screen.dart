@@ -332,6 +332,25 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               if (authController.pageController.hasClients)
                 if (authController.pageController.page?.round() == 0)
                   Positioned(
+                    right: 48,
+                    bottom: 28,
+                    child: GestureDetector(
+                      onTap: () async {
+                        authController.isSE = false;
+                        authController.forwardButton();
+                      },
+                      child: const CustomImage(
+                        path: Assets.images34,
+                        height: 55,
+                        width: 55,
+                      ),
+                    ),
+                  ),
+
+              // ----------------- DR Button ------------------------
+              if (authController.pageController.hasClients)
+                if (authController.pageController.page?.round() == 0)
+                  Positioned(
                     right: 128,
                     bottom: 28,
                     child: GestureDetector(
@@ -347,24 +366,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     ),
                   ),
 
-              // ----------------- DR Button ------------------------
-              if (authController.pageController.hasClients)
-                if (authController.pageController.page?.round() == 0)
-                  Positioned(
-                    right: 48,
-                    bottom: 28,
-                    child: GestureDetector(
-                      onTap: () async {
-                        authController.isSE = false;
-                        authController.forwardButton();
-                      },
-                      child: const CustomImage(
-                        path: Assets.images34,
-                        height: 55,
-                        width: 55,
-                      ),
-                    ),
-                  ),
               if (authController.pageController.hasClients)
                 if (authController.pageController.page?.round() == authController.images.length - 1)
                   Positioned(
@@ -402,7 +403,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
               // ----------------- Home Button ------------------------
               if (authController.pageController.hasClients)
-                if ((authController.pageController.page?.round() ?? 0) > 1 && authController.pageController.page?.round() != authController.images.length - 1)
+                if (authController.pageController.page!.round() > 0 && authController.pageController.page?.round() != authController.images.length - 1)
                   Positioned(
                     right: 38,
                     top: 28,
@@ -421,7 +422,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
               // ----------------- Sync Button ------------------------
               if (authController.pageController.hasClients)
-                if (authController.pageController.page?.round() == 1)
+                if (authController.pageController.page!.round() < 2)
                   Positioned(
                     left: 48,
                     bottom: 28,
