@@ -161,29 +161,9 @@ class _CameraScreenState extends State<CameraScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       children: [
-                        if (_imageFile == null) ...[
-                          Container(
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(60),
-                              color: Colors.grey.withOpacity(0.2),
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                _switchCamera();
-                              },
-                              child: Icon(
-                                Icons.cameraswitch_outlined,
-                                size: 30,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 18,
-                          ),
-                        ],
-                        if (_imageFile != null) Spacer(),
+                        SizedBox(
+                          width: 55,
+                        ),
                         _imageFile != null
                             ? IconButton(
                                 icon: const Icon(
@@ -221,7 +201,25 @@ class _CameraScreenState extends State<CameraScreen> {
                                 },
                               )
                             : const SizedBox(),
-                        const Spacer(),
+                        if (_imageFile == null) ...[
+                          Container(
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(60),
+                              color: Colors.grey.withOpacity(0.2),
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                _switchCamera();
+                              },
+                              child: Icon(
+                                Icons.cameraswitch_outlined,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),
