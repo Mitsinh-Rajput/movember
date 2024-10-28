@@ -38,7 +38,7 @@ class FormScreen extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: size.width * .18,
-                        child: Text(
+                        child: const Text(
                           "SE Name",
                           style: TextStyle(fontFamily: AppConstants.fontName2, fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
                         ),
@@ -64,7 +64,7 @@ class FormScreen extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: size.width * .18,
-                        child: Text(
+                        child: const Text(
                           "HQ",
                           style: TextStyle(fontFamily: AppConstants.fontName2, fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
                         ),
@@ -87,8 +87,8 @@ class FormScreen extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: size.width * .18,
-                        child: Text(
-                          "CITY",
+                        child: const Text(
+                          "REGION",
                           style: TextStyle(fontFamily: AppConstants.fontName2, fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                       ),
@@ -111,7 +111,7 @@ class FormScreen extends StatelessWidget {
                       children: [
                         SizedBox(
                           width: size.width * .18,
-                          child: Text(
+                          child: const Text(
                             "DR. NAME",
                             style: TextStyle(fontFamily: AppConstants.fontName2, fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
                           ),

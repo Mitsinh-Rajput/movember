@@ -40,6 +40,7 @@ class Assets {
   static const String images9 = 'assets/images/9.png';
   static const String imagesBackButton = 'assets/images/back_button.png';
   static const String imagesBackground = 'assets/images/background.jpg';
+  static const String imagesFIELD = 'assets/images/FIELD.png';
   static const String imagesHomeButton = 'assets/images/home_button.png';
   static const String imagesLogo = 'assets/images/logo.png';
   static const String imagesNextButton = 'assets/images/next_button.png';

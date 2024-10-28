@@ -328,6 +328,26 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       ),
                     ),
 
+              // ----------------- Download Button ------------------------
+              if (authController.pageController.hasClients)
+                if (authController.pageController.page!.round() == 8)
+                  if (!authController.isSE)
+                    Positioned(
+                      right: 128,
+                      bottom: 28,
+                      child: GestureDetector(
+                        onTap: () async {
+                          authController.saveInGallery();
+                          authController.forwardButton();
+                        },
+                        child: const CustomImage(
+                          path: Assets.images36,
+                          height: 55,
+                          width: 55,
+                        ),
+                      ),
+                    ),
+
               // ----------------- SE Button ------------------------
               if (authController.pageController.hasClients)
                 if (authController.pageController.page?.round() == 0)
@@ -336,11 +356,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     bottom: 28,
                     child: GestureDetector(
                       onTap: () async {
-                        authController.isSE = false;
+                        authController.isSE = true;
                         authController.forwardButton();
                       },
                       child: const CustomImage(
-                        path: Assets.images34,
+                        path: Assets.imagesFIELD,
                         height: 55,
                         width: 55,
                       ),
@@ -355,11 +375,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     bottom: 28,
                     child: GestureDetector(
                       onTap: () async {
-                        authController.isSE = true;
+                        authController.isSE = false;
                         authController.forwardButton();
                       },
                       child: const CustomImage(
-                        path: Assets.images35,
+                        path: Assets.images34,
                         height: 55,
                         width: 55,
                       ),

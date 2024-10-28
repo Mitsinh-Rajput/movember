@@ -229,13 +229,18 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+  saveInGallery() async {
+    imageFile = await convertUint8ListToImageFile(await screenshotController.capture());
+    await GallerySaver.saveImage(imageFile!.path, albumName: "Movember Let It Grow");
+    Fluttertoast.showToast(msg: "Saved In Gallery");
+  }
+
   submitForm() async {
     _isLoading = true;
     update();
 
     if (isSE) {
-      imageFile = await convertUint8ListToImageFile(await screenshotController.capture());
-      await GallerySaver.saveImage(imageFile!.path, albumName: "Movember Let It Grow");
+      saveInGallery();
     }
     data['se_name'] = oneController.text;
     data['dr_name'] = threeController.text;
@@ -243,7 +248,7 @@ class AuthController extends GetxController implements GetxService {
     data['city'] = fourController.text;
     data['comment'] = feedback.text;
     data['image_url'] = MultipartFile(imageFile, filename: imageFile!.path.fileName);
-    data["type"] = isSE ? "SE" : "DR";
+    data["type"] = isSE ? "FIELD" : "DR";
     submitDa(data).then((value) async {
       if (value.isSuccess) {
         resetForm();
