@@ -239,9 +239,6 @@ class AuthController extends GetxController implements GetxService {
     _isLoading = true;
     update();
 
-    if (isSE) {
-      saveInGallery();
-    }
     data['se_name'] = oneController.text;
     data['dr_name'] = threeController.text;
     data['hq'] = twoController.text;

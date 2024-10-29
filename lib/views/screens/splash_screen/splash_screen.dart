@@ -318,7 +318,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       bottom: 28,
                       child: GestureDetector(
                         onTap: () async {
-                          authController.submitForm();
+                          authController.saveInGallery();
                         },
                         child: const CustomImage(
                           path: Assets.images36,
@@ -352,8 +352,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               if (authController.pageController.hasClients)
                 if (authController.pageController.page?.round() == 0)
                   Positioned(
-                    right: 48,
-                    bottom: 28,
+                    right: 40,
+                    bottom: 20,
                     child: GestureDetector(
                       onTap: () async {
                         authController.isSE = true;
@@ -361,8 +361,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       },
                       child: const CustomImage(
                         path: Assets.imagesFIELD,
-                        height: 55,
-                        width: 55,
+                        height: 73,
+                        width: 73,
                       ),
                     ),
                   ),
@@ -430,6 +430,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     child: GestureDetector(
                       onTap: () async {
                         if (authController.isLoading) return;
+                        if (authController.pageController.page == 8 && authController.isSE) {
+                          authController.submitForm();
+                        }
                         authController.homeButton();
                       },
                       child: const CustomImage(
