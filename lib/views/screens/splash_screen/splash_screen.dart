@@ -117,6 +117,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
         if (pickedFile != null) {
           Get.find<AuthController>().imageFile = pickedFile;
+          Get.find<AuthController>().screenShotImageFile = pickedFile;
 
           await Get.find<AuthController>().pageController.animateToPage(8, duration: const Duration(milliseconds: 50), curve: Curves.ease);
           Get.find<AuthController>().update();
@@ -337,7 +338,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(300),
                                 child: Image.file(
-                                  Get.find<AuthController>().imageFile!,
+                                  Get.find<AuthController>().screenShotImageFile!,
                                   height: 100,
                                   width: 100,
                                   fit: BoxFit.cover,

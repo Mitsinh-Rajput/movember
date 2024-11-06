@@ -91,6 +91,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   File? imageFile;
+  File? screenShotImageFile;
 
   Future<bool> getPermission(Permission permission, BuildContext context, {String? message, final double? dialogHeight}) async {
     PermissionStatus? status;
