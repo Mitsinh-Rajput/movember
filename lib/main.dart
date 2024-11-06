@@ -19,7 +19,8 @@ void main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
-  ]).then((value) => runApp(const MyApp()));
+  ]);
+  runApp(const MyApp());
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -44,8 +45,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
     log('Current state = $state');
   }
-
-  // static const _rotationChannel = const MethodChannel('zgadula/orientation');
 
   @override
   void initState() {

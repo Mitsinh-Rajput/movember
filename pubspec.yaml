@@ -49,6 +49,7 @@ dependencies:
   image: ^4.3.0
   gallery_saver:
   screenshot: ^2.5.0
+  app_settings: ^5.1.1
 
 
 

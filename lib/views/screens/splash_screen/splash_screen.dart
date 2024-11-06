@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -11,6 +12,7 @@ import 'package:screenshot/screenshot.dart';
 
 import '../../../controllers/auth_controller.dart';
 import '../../../main.dart';
+import '../../base/common_button.dart';
 import '../../base/custom_image.dart';
 import '../../base/dialogs/camera.dart';
 import 'form_screen.dart';
@@ -48,6 +50,52 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     super.dispose();
   }
 
+  void showpopup() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            surfaceTintColor: Colors.white,
+            backgroundColor: Colors.white,
+            title: Text(
+              "Camera Premission Required!",
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+            content: Text(
+              "To capture a photo with a mustache effect, the app requires camera permission.",
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(fontSize: 12, color: Colors.black),
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CustomButton(
+                    color: Colors.white,
+                    elevation: 0,
+                    type: ButtonType.secondary,
+                    radius: 10,
+                    onTap: () {
+                      Navigator.of(context).pop(); // Closes the popup
+                    },
+                    child: Text("Cancel"),
+                  ),
+                  CustomButton(
+                    elevation: 0,
+                    color: Colors.green,
+                    type: ButtonType.primary,
+                    radius: 10,
+                    onTap: () async {
+                      await openAppSettings();
+                    },
+                    child: Text("Open Settings"),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
+  }
+
   Future<void> _pickImage(ImageSource source, String? assets) async {
     log(assets!);
     var navigator = Navigator.of(navigatorKey.currentContext!);
@@ -69,6 +117,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
         if (pickedFile != null) {
           Get.find<AuthController>().imageFile = pickedFile;
+
           await Get.find<AuthController>().pageController.animateToPage(8, duration: const Duration(milliseconds: 50), curve: Curves.ease);
           Get.find<AuthController>().update();
         }
@@ -122,10 +171,15 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       left: 110,
                       child: GestureDetector(
                         onTap: () async {
-                          if (!(await Permission.camera.status.isGranted)) {
-                            await Permission.camera.request();
-                          } else {
-                            _pickImage(ImageSource.camera, Assets.images12);
+                          try {
+                            if (!(await Permission.camera.status.isGranted)) {
+                              await Permission.camera.request();
+                              showpopup();
+                            } else {
+                              _pickImage(ImageSource.camera, Assets.images12);
+                            }
+                          } catch (e) {
+                            Fluttertoast.showToast(msg: e.toString());
                           }
                         },
                         child: Container(
@@ -141,6 +195,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         onTap: () async {
                           if (!(await Permission.camera.status.isGranted)) {
                             await Permission.camera.request();
+                            showpopup();
                           } else {
                             _pickImage(ImageSource.camera, Assets.images13);
                           }
@@ -158,6 +213,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         onTap: () async {
                           if (!(await Permission.camera.status.isGranted)) {
                             await Permission.camera.request();
+                            showpopup();
                           } else {
                             _pickImage(ImageSource.camera, Assets.images15);
                           }
@@ -175,6 +231,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         onTap: () async {
                           if (!(await Permission.camera.status.isGranted)) {
                             await Permission.camera.request();
+                            showpopup();
                           } else {
                             _pickImage(ImageSource.camera, Assets.images14);
                           }
@@ -192,6 +249,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         onTap: () async {
                           if (!(await Permission.camera.status.isGranted)) {
                             await Permission.camera.request();
+                            showpopup();
+                          } else if ((await Permission.camera.isPermanentlyDenied)) {
+                            await Permission.camera.request();
+                            showpopup();
                           } else {
                             _pickImage(ImageSource.camera, Assets.images16);
                           }
@@ -207,8 +268,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       left: 335,
                       child: GestureDetector(
                         onTap: () async {
+                          log("sdfsdfsdf");
                           if (!(await Permission.camera.status.isGranted)) {
                             await Permission.camera.request();
+                            showpopup();
                           } else {
                             _pickImage(ImageSource.camera, Assets.images17);
                           }
@@ -226,6 +289,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         onTap: () async {
                           if (!(await Permission.camera.status.isGranted)) {
                             await Permission.camera.request();
+                            showpopup();
                           } else {
                             _pickImage(ImageSource.camera, Assets.images19);
                           }
@@ -243,6 +307,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         onTap: () async {
                           if (!(await Permission.camera.status.isGranted)) {
                             await Permission.camera.request();
+                            showpopup();
                           } else {
                             _pickImage(ImageSource.camera, Assets.images18);
                           }
@@ -299,6 +364,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     bottom: 28,
                     child: GestureDetector(
                       onTap: () async {
+                        if (authController.pageController.page == 8) {
+                          Get.find<AuthController>().imageFile =
+                              await Get.find<AuthController>().convertUint8ListToImageFile(await Get.find<AuthController>().screenshotController.capture());
+                          Get.find<AuthController>().update();
+                        }
                         authController.forwardButton();
                       },
                       child: const CustomImage(
@@ -431,6 +501,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       onTap: () async {
                         if (authController.isLoading) return;
                         if (authController.pageController.page == 8 && authController.isSE) {
+                          if (authController.pageController.page == 8) {
+                            Get.find<AuthController>().imageFile =
+                                await Get.find<AuthController>().convertUint8ListToImageFile(await Get.find<AuthController>().screenshotController.capture());
+                            Get.find<AuthController>().update();
+                          }
                           authController.submitForm();
                         }
                         authController.homeButton();
