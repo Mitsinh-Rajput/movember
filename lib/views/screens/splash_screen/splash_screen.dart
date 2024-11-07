@@ -29,7 +29,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
-
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     Timer.run(() async {
       Future.delayed(const Duration(seconds: 2), () {
         setState(() {});
@@ -77,7 +80,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     onTap: () {
                       Navigator.of(context).pop(); // Closes the popup
                     },
-                    child: Text("Cancel"),
+                    child: const Text("Cancel"),
                   ),
                   CustomButton(
                     elevation: 0,
@@ -87,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     onTap: () async {
                       await openAppSettings();
                     },
-                    child: Text("Open Settings"),
+                    child: const Text("Open Settings"),
                   ),
                 ],
               ),
@@ -114,11 +117,14 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
             assets: assets,
           ),
         ));
+        await SystemChrome.setPreferredOrientations([
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight,
+        ]);
 
         if (pickedFile != null) {
           Get.find<AuthController>().imageFile = pickedFile;
           Get.find<AuthController>().screenShotImageFile = pickedFile;
-
           await Get.find<AuthController>().pageController.animateToPage(8, duration: const Duration(milliseconds: 50), curve: Curves.ease);
           Get.find<AuthController>().update();
         }
@@ -269,7 +275,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       left: 335,
                       child: GestureDetector(
                         onTap: () async {
-                          log("sdfsdfsdf");
                           if (!(await Permission.camera.status.isGranted)) {
                             await Permission.camera.request();
                             showpopup();
@@ -345,7 +350,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                                 ),
                               ),
                             ),
-                            CustomImage(
+                            const CustomImage(
                               path: Assets.images32,
                               height: 409,
                             ),
