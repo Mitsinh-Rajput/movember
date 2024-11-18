@@ -63,7 +63,7 @@ class AuthController extends GetxController implements GetxService {
 
   List<String> images = [
     Assets.images1,
-    Assets.images2,
+    Assets.assetsImagesBackground,
     Assets.images3,
     Assets.images4,
     Assets.images5,

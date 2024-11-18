@@ -100,7 +100,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   }
 
   Future<void> _pickImage(ImageSource source, String? assets) async {
-    log(assets!);
     var navigator = Navigator.of(navigatorKey.currentContext!);
     bool permission = false;
     if (source == ImageSource.camera) {
@@ -122,7 +121,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           DeviceOrientation.landscapeRight,
         ]);
 
+        log("dfsdgsdfsd");
+
         if (pickedFile != null) {
+          log("dfsdgsdfsd");
           Get.find<AuthController>().imageFile = pickedFile;
           Get.find<AuthController>().screenShotImageFile = pickedFile;
           await Get.find<AuthController>().pageController.animateToPage(8, duration: const Duration(milliseconds: 50), curve: Curves.ease);
@@ -138,12 +140,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     return GetBuilder<AuthController>(builder: (authController) {
       return Scaffold(
         body: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage(
-              Assets.imagesBackground,
-            ),
-          )),
           width: size.width,
           height: size.height,
           child: Stack(
@@ -158,9 +154,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                   setState(() {});
                 },
                 itemBuilder: (BuildContext context, int index) {
-                  if (index == 1) {
-                    return const FormScreen();
-                  }
+                  // if (index == 1) {
+                  //   return const FormScreen();
+                  // }
 
                   return CustomImage(
                     path: authController.images[index],
@@ -171,6 +167,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 },
               ),
 
+              if (authController.pageController.hasClients)
+                if (authController.pageController.page?.round() == 1)
+                  Positioned.fill(
+                    child: FormScreen(),
+                  ),
               if (authController.pageController.hasClients)
                 if (authController.pageController.page?.round() == 7) ...[
                   Positioned(
