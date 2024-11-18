@@ -8,7 +8,7 @@ class Assets {
   static const String fontsMyriadProSemibold = 'assets/fonts/MyriadPro-Semibold.otf';
   static const String images1 = 'assets/images/1.png';
   static const String images10 = 'assets/images/10.png';
-  static const String images11 = 'assets/images/11.png';
+  static const String images11 = 'assets/images/11.jpg';
   static const String images12 = 'assets/images/12.png';
   static const String images13 = 'assets/images/13.png';
   static const String images14 = 'assets/images/14.png';
